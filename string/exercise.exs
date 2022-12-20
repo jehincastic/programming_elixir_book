@@ -30,6 +30,34 @@ defmodule Exercise do
     defp parse_operator([ ?+ | rest ]), do: { fn x, y -> x + y end, rest}
     defp parse_operator([ ?* | rest ]), do: { fn x, y -> x * y end, rest}
     defp parse_operator([ ?/ | rest ]), do: { fn x, y -> div(x, y) end, rest}
+
+    def center(strings) do
+      strings
+      |> Enum.map_reduce(0, &acc_max_leng(&1, &2))
+      |> center_str
+      |> Enum.each(&IO.puts/1)
+    end
+
+    defp acc_max_leng(str, max_len) do
+      l = String.length str
+      { {str, l}, max(l, max_len) }
+    end
+
+    defp center_str({ strings, field_width }) do
+      val = strings |> Enum.map(&center_one_string(field_width, &1))
+      val
+    end
+
+    defp center_one_string(field_width, { str, length }) do
+      "#{String.duplicate(" ", div(field_width - length, 2))}#{str}"
+    end
+
+    def capitalize(str) do
+      str
+      |> String.split(~r{\.\s+})
+      |> Enum.map(&String.capitalize/1)
+      |> Enum.join(". ")
+    end
 end
 
 IO.puts Exercise.printable?('hello')
@@ -41,3 +69,5 @@ IO.puts Exercise.calculate(('23+45'))
 IO.puts Exercise.calculate(('45-23'))
 IO.puts Exercise.calculate(('11 * 4'))
 IO.puts Exercise.calculate(('100 / 5'))
+Exercise.center(["cat", "zebra", "elephant"])
+IO.inspect Exercise.capitalize("oh. a DOG. woof. ")
