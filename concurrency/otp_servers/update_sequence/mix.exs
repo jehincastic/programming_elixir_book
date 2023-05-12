@@ -1,9 +1,9 @@
-defmodule Stack.MixProject do
+defmodule UpdateSequence.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :stack,
+      app: :update_sequence,
       version: "0.1.0",
       elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
