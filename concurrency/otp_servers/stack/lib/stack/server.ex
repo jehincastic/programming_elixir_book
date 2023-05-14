@@ -1,9 +1,11 @@
 defmodule Stack.Server do
   use GenServer
+
+  alias Stack.Stash
   alias Stack.Impl
 
-  def start_link(current_number) do
-    GenServer.start_link(__MODULE__, current_number, name: __MODULE__)
+  def start_link(_) do
+    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
   def add_to_stack(val) do
@@ -14,8 +16,8 @@ defmodule Stack.Server do
     GenServer.call(__MODULE__, :pop)
   end
 
-  def init(initial_state \\ []) do
-    {:ok, initial_state}
+  def init(_) do
+    { :ok, Stash.get }
   end
 
   def handle_call({:push, data}, _from, state) do
@@ -28,7 +30,7 @@ defmodule Stack.Server do
     {:reply, val, new_state}
   end
 
-  def terminate(reason, state) do
-    IO.inspect({ reason, state })
+  def terminate(_reason, state) do
+    Stash.update(state)
   end
 end

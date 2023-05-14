@@ -8,9 +8,10 @@ defmodule Stack.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: SupSeq.Worker.start_link(arg)
-      # {SupSeq.Worker, arg}
-      { Stack.Server, [1, 2, 3] },
+      # Starts a worker by calling: Stack.Server.Stash(arg)
+      { Stack.Stash, [1, 2, 3] },
+      # Starts a worker by calling: Stack.Server.start_link(arg)
+      { Stack.Server, nil },
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -8,14 +8,15 @@ defmodule SupSeq.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: SupSeq.Worker.start_link(arg)
-      # {SupSeq.Worker, arg}
-      { SupSeq.Server, 123 },
+      # Starts a worker by calling: SupSeq.Stash.start_link(arg)
+      { SupSeq.Stash, 123 },
+      # Starts a worker by calling: SupSeq.Server.start_link(arg)
+      { SupSeq.Server, nil },
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: SupSeq.Supervisor]
+    opts = [strategy: :rest_for_one, name: SupSeq.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end

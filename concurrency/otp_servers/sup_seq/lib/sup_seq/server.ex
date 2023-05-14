@@ -1,9 +1,10 @@
 defmodule SupSeq.Server do
+
   use GenServer
 
   # External API
-  def start_link(current_number) do
-    GenServer.start_link(__MODULE__, current_number, name: __MODULE__)
+  def start_link(_) do
+    GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end
 
   def next_number do
@@ -14,8 +15,8 @@ defmodule SupSeq.Server do
     GenServer.cast __MODULE__, { :increment_number, delta }
   end
 
-  def init(initial_number) do
-    { :ok, initial_number }
+  def init(_) do
+    { :ok, SupSeq.Stash.get }
   end
 
   def handle_call(:next_number, _from, curr_number) do
@@ -32,5 +33,9 @@ defmodule SupSeq.Server do
 
   def format_status(_reason, [_pdict, state]) do
     [data: [{'State', "My current state is '#{inspect state}', and I'm happy"}]]
+  end
+
+  def terminate(_reason, curr_num) do
+    SupSeq.Stash.update_number(curr_num)
   end
 end
