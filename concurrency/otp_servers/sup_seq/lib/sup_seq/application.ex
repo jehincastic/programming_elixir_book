@@ -6,10 +6,10 @@ defmodule SupSeq.Application do
   use Application
 
   @impl true
-  def start(_type, _args) do
+  def start(_type, init_state) do
     children = [
       # Starts a worker by calling: SupSeq.Stash.start_link(arg)
-      { SupSeq.Stash, 123 },
+      { SupSeq.Stash, init_state },
       # Starts a worker by calling: SupSeq.Server.start_link(arg)
       { SupSeq.Server, nil },
     ]

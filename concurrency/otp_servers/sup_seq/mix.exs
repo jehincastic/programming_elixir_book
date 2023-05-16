@@ -15,7 +15,7 @@ defmodule SupSeq.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {SupSeq.Application, []}
+      mod: {SupSeq.Application, 456}
     ]
   end
 
